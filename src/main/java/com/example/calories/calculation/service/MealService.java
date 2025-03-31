@@ -1,5 +1,6 @@
 package com.example.calories.calculation.service;
 
+import com.example.calories.calculation.exception.UserNotFoundException;
 import com.example.calories.calculation.model.Meal;
 import com.example.calories.calculation.model.User;
 import com.example.calories.calculation.repository.MealRepository;
@@ -33,8 +34,13 @@ public class MealService {
     }
 
     public Meal addMeal(Long userId, Meal meal) {
+        if (meal == null) {
+            throw new IllegalArgumentException("Meal cannot be null");
+        }
+
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
+
         meal.setUser(user);
         return mealRepository.save(meal);
     }

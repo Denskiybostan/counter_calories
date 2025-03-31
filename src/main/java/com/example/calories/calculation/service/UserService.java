@@ -32,6 +32,10 @@ public class UserService {
     }
     // Метод для расчета дневной нормы калорий
     public double calculateDailyCalories(User user) {
+        if (user.getAge() <= 0 || user.getWeight() <= 0 || user.getHeight() <= 0) {
+            throw new IllegalArgumentException("Возраст, вес и рост должны быть больше 0.");
+        }
+
         double bmr;
         if (user.getGender() == Gender.MALE) {
             bmr = 88.362 + (13.397 * user.getWeight()) + (4.799 * user.getHeight()) - (5.677 * user.getAge());
@@ -53,11 +57,12 @@ public class UserService {
         }
         return dailyCalories;
     }
-    // Метод для создания нового пользователя
     public User createUser(User user) {
+        if (user.getAge() <= 0 || user.getWeight() <= 0 || user.getHeight() <= 0) {
+            throw new IllegalArgumentException("Возраст, вес и рост должны быть больше 0.");
+        }
         return repository.save(user);
     }
-
     // Метод для получения пользователя по ID
     public Optional<User> getUserById(Long userId) {
         return repository.findById(userId);

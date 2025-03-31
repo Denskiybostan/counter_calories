@@ -1,6 +1,7 @@
 package com.example.calories.calculation.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,12 +14,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class User {
+    @Email(message = "Введите правильный email")
     @Column(unique = true, nullable = false)
     private String email;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "Имя не может быть пустым")
+    @Size(min = 2, max = 50, message = "Имя должно быть от 2 до 50 символов")
     private String name;
+    @NotNull(message = "Возраст не может быть пустым")
+    @Min(value = 18, message = "Возраст должен быть минимум 18 лет")
+    @Max(value = 100, message = "Возраст не может превышать 100 лет")
     private int age;
     private double weight;
     private double height;
